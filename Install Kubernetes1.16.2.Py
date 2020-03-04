@@ -82,7 +82,8 @@ Swap:             0           0           0
 三台全部激活bridge流量
 echo "net.bridge.bridge-nf-call-iptables = 1" >> /etc/sysctl.conf 
 echo "net.bridge.bridge-nf-call-ip6tables = 1" >> /etc/sysctl.conf 
-
+注意: 如果没有找到上面的两个目录
+modprobe br_netfilter # 加载一下这个模块即可                 
 安装kubelete
 vim /etc/yum.repos.d/kubernets.repo                                  
 [aliyun.k8s]
@@ -128,7 +129,7 @@ docker tag bluersw/flannel:v0.11.0-amd64 quay.io/coreos/flannel:v0.11.0-amd64
 docker images | grep bluersw | awk '{print "docker rmi ",$1":"$2}' | sh -x
                                   
 Master节点初始化
-执行kubeadm init初始化命令：
+#执行kubeadm init初始化命令：
 kubeadm init  --kubernetes-version=v1.16.2 --apiserver-advertise-address=192.168.232.20 --pod-network-cidr=10.244.0.0/16 --service-cidr=10.1.0.0/16
 # --apiserver-advertise-address=192.168.232.20 IP 地址为MasterIP
 # --kubernetes-version=v1.16.2 加上该参数后启动相关镜像（刚才下载的那一堆）
